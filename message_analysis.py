@@ -31,3 +31,10 @@ for d in data:
 print('In total, there are', count_d_lower_100, 'messages whose length is lower than 100')
 print(len(new))
 print(new[0])
+
+new_good = []
+for d in data:
+    if 'good' in d:
+        new_good.append(d)
+
+print('In total, there are',len(new_good), 'messages mentioning good')
