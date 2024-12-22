@@ -38,3 +38,9 @@ for d in data:
         new_good.append(d)
 
 print('In total, there are',len(new_good), 'messages mentioning good')
+
+new_good_fast = [d for d in data if 'good' in d]
+print('In total, there are',len(new_good_fast), 'messages mentioning good')
+
+new_bad_fast = ['bad' in d for d in data]
+print(new_bad_fast)
