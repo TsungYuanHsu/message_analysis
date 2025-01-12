@@ -1,17 +1,21 @@
 # Message analysis
 import re
+import time
+import progressbar
 
 # Read function
 def read(filename):
     data = []
     count = 0
+    bar = progressbar.ProgressBar(max_value=1000000)
     with open(filename, 'r') as f:
         for line in f:
             data.append(line.strip())
             count += 1
-    #         if count % 1000 == 0:
-    #             print('It is', count, 'th runs')      
-    # print('It is done running,', 'There are in total', count, 'messages')
+            bar.update(count)
+            # if count % 1000 == 0:
+            #     print('It is', count, 'th runs')      
+    print('It is done running,', 'There are in total', count, 'messages')
     print(data[0])
     return data
 
@@ -41,7 +45,7 @@ def length_filter(data):
 
 
 # Function to calculate word count
-def word_count(data):
+def count_word(data):
     new_good = []
     for d in data:
         if 'good' in d:
@@ -51,12 +55,13 @@ def word_count(data):
     new_good_fast = [d for d in data if 'good' in d]
     print('In total, there are',len(new_good_fast), 'messages mentioning good')
 
-    new_bad_fast = ['bad' in d for d in data]
-    print(new_bad_fast)
+    # new_bad_fast = ['bad' in d for d in data]
+    # print(new_bad_fast)
 
 
 # Calculate each word occurs how many times
 def each_word_count(data):
+    start_time = time.time()
     word_count = {}
     for d in data:
         d_split = re.split('[:."-/+=; ,()?!]', d)
@@ -66,7 +71,12 @@ def each_word_count(data):
             else:
                 word_count[word] = 1
     print(len(word_count))
+    stop_time = time.time()
+    print(start_time)
+    print(stop_time)
+    print('The word-counting function spends', stop_time - start_time, 's')
     return word_count
+
 
 
 # Omly print words repeating certain times
@@ -93,6 +103,7 @@ def main():
     data = read('reviews.txt')
     length_calculate(data)
     length_filter(data)
+    count_word(data)
     word_count = each_word_count(data)
     filter_word_count(word_count)
     user_search(word_count)
